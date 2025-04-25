@@ -1,0 +1,20 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    ports:
+      - 8080:8080
+    volumes:
+      - jenkins-bucket:/var/jenkins_home
+
+volumes:
+  jenkins-bucket:
+    driver: rexray/s3fs
+    name: seu-bucket-s3
+    driver_opts:
+      bucket: "seu-bucket-s3"
+      endpoint: "http://sua-url-api-minios3.com"
+      options: "url=http://sua-url-api-minios3.com,allow_other,use_path_request_style"
